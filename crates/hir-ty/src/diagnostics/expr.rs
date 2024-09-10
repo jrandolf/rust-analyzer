@@ -124,7 +124,7 @@ impl ExprValidator {
                 Expr::If { .. } => {
                     self.check_for_unnecessary_else(id, expr, db);
                 }
-                Expr::Block { .. } | Expr::Async { .. } | Expr::Unsafe { .. } => {
+                Expr::Block { .. } | Expr::Unsafe { .. } => {
                     self.validate_block(db, expr);
                 }
                 _ => {}
@@ -311,10 +311,7 @@ impl ExprValidator {
     }
 
     fn validate_block(&mut self, db: &dyn HirDatabase, expr: &Expr) {
-        let (Expr::Block { statements, .. }
-        | Expr::Async { statements, .. }
-        | Expr::Unsafe { statements, .. }) = expr
-        else {
+        let (Expr::Block { statements, .. } | Expr::Unsafe { statements, .. }) = expr else {
             return;
         };
         let pattern_arena = Arena::new();

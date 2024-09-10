@@ -11,6 +11,7 @@
 //!     add:
 //!     asm:
 //!     assert:
+//!     async_iterator: option, future, pin
 //!     as_ref: sized
 //!     bool_impl: option, fn
 //!     builtin_impls:
@@ -1267,6 +1268,26 @@ pub mod task {
     }
 }
 // endregion:future
+
+// region:async_iterator
+pub mod async_iter {
+    use crate::{
+        pin::Pin,
+        task::{Context, Poll},
+    };
+
+    #[lang = "async_iterator"]
+    pub trait AsyncIterator {
+        type Item;
+
+        fn poll_next(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Option<Self::Item>>;
+
+        fn size_hint(&self) -> (usize, Option<usize>) {
+            loop {}
+        }
+    }
+}
+// endregion:async_iterator
 
 // region:iterator
 pub mod iter {

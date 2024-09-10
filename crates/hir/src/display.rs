@@ -78,6 +78,9 @@ impl HirDisplay for Function {
         if data.is_async() {
             f.write_str("async ")?;
         }
+        if data.is_gen() {
+            f.write_str("gen ")?;
+        }
         if self.is_unsafe_to_call(db) {
             f.write_str("unsafe ")?;
         }
@@ -125,7 +128,7 @@ impl HirDisplay for Function {
         // `FunctionData::ret_type` will be `::core::future::Future<Output = ...>` for async fns.
         // Use ugly pattern match to strip the Future trait.
         // Better way?
-        let ret_type = if !data.is_async() {
+        let ret_type = if !data.is_async() && !data.is_gen() {
             &data.ret_type
         } else {
             match &*data.ret_type {

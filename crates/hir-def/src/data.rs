@@ -144,6 +144,10 @@ impl FunctionData {
         self.flags.contains(FnFlags::HAS_ASYNC_KW)
     }
 
+    pub fn is_gen(&self) -> bool {
+        self.flags.contains(FnFlags::HAS_GEN_KW)
+    }
+
     pub fn is_unsafe(&self) -> bool {
         self.flags.contains(FnFlags::HAS_UNSAFE_KW)
     }
@@ -301,9 +305,12 @@ impl TraitData {
         })
     }
 
-    pub fn associated_type_by_name(&self, name: &Name) -> Option<TypeAliasId> {
+    pub fn associated_type_by_name<S>(&self, sym: &S) -> Option<TypeAliasId>
+    where
+        Name: PartialEq<S>,
+    {
         self.items.iter().find_map(|(item_name, item)| match item {
-            AssocItemId::TypeAliasId(t) if item_name == name => Some(*t),
+            AssocItemId::TypeAliasId(t) if *item_name == *sym => Some(*t),
             _ => None,
         })
     }

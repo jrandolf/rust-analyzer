@@ -717,4 +717,39 @@ impl Person {
 "#,
         );
     }
+
+    #[test]
+    fn test_gen_fn() {
+        check_assist(
+            generate_delegate_methods,
+            r#"
+struct Age(u8);
+impl Age {
+    gen fn age(&self) -> u8 {
+        self.0
+    }
+}
+
+struct Person {
+    ag$0e: Age,
+}"#,
+            r#"
+struct Age(u8);
+impl Age {
+    gen fn age(&self) -> u8 {
+        self.0
+    }
+}
+
+struct Person {
+    age: Age,
+}
+
+impl Person {
+    $0gen fn age(&self) -> u8 {
+        self.age.age()
+    }
+}"#,
+        );
+    }
 }

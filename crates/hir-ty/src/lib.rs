@@ -602,6 +602,8 @@ pub enum ImplTraitId {
     ReturnTypeImplTrait(hir_def::FunctionId, ImplTraitIdx),
     TypeAliasImplTrait(hir_def::TypeAliasId, ImplTraitIdx),
     AsyncBlockTypeImplTrait(hir_def::DefWithBodyId, ExprId),
+    GenBlockTypeImplTrait(hir_def::DefWithBodyId, ExprId),
+    AsyncGenBlockTypeImplTrait(hir_def::DefWithBodyId, ExprId),
 }
 impl InternValueTrivial for ImplTraitId {}
 
